@@ -11,7 +11,6 @@ interface User {
 }
 let dev_users: { [playerId: string]: User } = {};
 export const setupSocketIO = (server: HttpServer) => {
-  // const io = new ServerSocket(server);
   const io = new ServerSocket(server, {
     cors: {
       origin: "*",
@@ -32,7 +31,7 @@ export const setupSocketIO = (server: HttpServer) => {
     console.log("Client connected: " + playerId);
 
     function createGame(options?: { id: string; isPublic?: boolean }): string {
-      let id = (options && options.id) || generateId();
+      let id =  generateId();
       let game = new Game(options && options.isPublic);
       games.push(game);
       socket.emit("game id", game.id);
@@ -54,17 +53,11 @@ export const setupSocketIO = (server: HttpServer) => {
         return false;
       }
       currentGameId = game.id;
-      game.onGameOver = function (data) {
-        console.log("the game is over");
-        if (currentGameId) {
-          io.in(currentGameId).emit("gameover", data);
-        }
-      };
-
+   
 
       socket.emit("game", game.data());
       if (game.players.length === 2) {
-        game.start();
+        
         if (currentGameId) {
           io.in(currentGameId).emit("players", game.players);
          }
@@ -72,20 +65,29 @@ export const setupSocketIO = (server: HttpServer) => {
       return true;
     }
 
+   
+    socket.on("create", (data) => {
+      console.log("socket create");
+      createGame(data);
+    });
+
+    socket.on("join game", (id, username) => {
+      console.log("socket join");
+      joinGame(id, username);
+    });
+
+
     async function leave(): Promise<void> {
       let gameIndex = games.findIndex((g) => g.id === currentGameId);
       if (gameIndex === -1) return;
       let game = games[gameIndex];
-      let pIndex = game.players.findIndex((p) => p.id === playerId);
+     
        
       
-      game.active[pIndex] = false;
-      games = games.filter((g) => g.active.find((a) => !!a));
       if (currentGameId === waitlistGameId) {
         waitlistGameId = null;
       }
     
-      // Leave all rooms
       await Promise.all([...socket.rooms].map(async (room) => {
         if (room !== socket.id) {
           await socket.leave(room);
@@ -97,66 +99,14 @@ export const setupSocketIO = (server: HttpServer) => {
       }
       currentGameId = null;
     }
-    socket.on("create", (data) => {
-      console.log("socket create");
-      createGame(data);
-    });
-
-    socket.on("join game", (id, username) => {
-      console.log("socket join");
-      joinGame(id, username);
-    });
-var c ;
-    socket.on("waitlist", (_username) => {
-      if (waitlistGameId) {
-        socket.emit("ramdom id", waitlistGameId);
-        console.log("User " + _username + " joined game as black");
-        c++;
-        if(c==4){
-          waitlistGameId = null;
-        }
-      } else {
-        console.log("User " + _username + " joined game as white");
-        waitlistGameId = createGame({ id: generateId(), isPublic: true });
-      }
-    });
-
-    socket.on("gameover", async (data) => {
-    
-      const gameIndex = games.findIndex((g) => g.id === currentGameId);
-      if (gameIndex === -1) return;
-      const game = games[gameIndex];
-      const gameId = game.id;
-      const gameId_ = gameId.toString()
-     
-      game.setGameOver(data);
-    });
-    socket.on("move", (move, sentAt) => {
-      const gameIndex = games.findIndex((g) => g.id === currentGameId);
-      if (gameIndex === -1) return;
-      const game = games[gameIndex];
-      game.move(move, sentAt);
-      socket.broadcast.to(currentGameId!).emit("move", move, Date.now());
-      io.in(currentGameId!).emit("time-left", game.timer.time, Date.now());
-    });
+   
+   
 
     socket.on("message", (data) => {
       socket.broadcast.to(currentGameId!).emit("message", data);
     });
 
-    socket.on("rematch", (gameId) => {
-      const gameIndex = games.findIndex((g) => g.id === currentGameId);
-      if (gameIndex === -1) return;
-      const game = games[gameIndex];
-      if (game.rematch) {
-        game.rematch = null;
-        game.runRematch();
-        game.start();
-        io.in(gameId).emit("game", game.data());
-      } else {
-        game.rematch = playerId;
-      }
-    });
+  
 
     socket.on("leave", () => {
       leave();

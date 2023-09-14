@@ -3,24 +3,19 @@ import { useRouter } from "next/router";
 import { useSocket } from "@/contexts/SocketContext";
 import { useUser } from "@/contexts/UserContext";
 import Loader from "./Loader";
-import styles from "./Menu.module.css";
 import Image from "next/image";
-import SmokeBackground from "./Particles";
 import { useGame } from "@/contexts/GamesContext";
-
 import { Button, Card, TextInput } from "flowbite-react";
 
 export default function Menu() {
   const router = useRouter();
-  const [myGames, setMyGames] = useState<any[]>([]); // Specify the type for myGames
+ 
   const [loading, setLoading] = useState(false);
-  const [isPrivate, setIsPrivate] = useState<boolean | undefined>(); // Specify the type for isPrivate
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]); // Specify the type for onlineUsers
   const [joiningGame, setJoiningGame] = useState(false);
   const [gameId, setGameId] = useState("");
 
 
-  const { makest, makerg, makejg } = useGame() || {};
 
   const handleGameIdChange = (event) => {
     setGameId(event.target.value);
@@ -32,7 +27,6 @@ export default function Menu() {
   };
 
   const handleJoinWithGameId = async () => {
-    makejg();
     setLoading(true);
     console.log("Joining game with ID:", gameId);
         router.push("/chess/" + gameId);
@@ -77,45 +71,23 @@ export default function Menu() {
   }, [socket]);
 
   const handlePrivateGameClick = () => {
-    makest();
+   
     setLoading(true);
     socket?.emit("create");
   };
   const gotolib = () => {
-    router.push("/Library");
+    console.log("kjn")
   };
 
-  function BackgroundImage() {
-    return (
-      <div className="fixed top-0 left-0 w-full h-full z-[-1]">
-        <Image
-          src="/chess-bg-new.jpg"
-          layout="fill"
-          objectFit="cover"
-          alt="Chess Background"
-          style={{boxShadow:"10px 10px 20px black", filter:"dropShadow(10px 10px 20px white)"}}
-        />
-      </div>
-    );
-  }
+ 
 
   return (
     <>
-      {/* <BackgroundImage /> */}
+   
       <div className="relative flex items-center justify-center w-full h-screen bg-center bg-no-repeat bg-cover">
         <div className="relative h-full">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="max-w-screen-md mx-auto">
-              {/* <div className={styles["slow-moving-text"]}>
-                A chess game on the Tezos blockchain where you can stake 5 ꜩ to
-                start either a private game or a public chess match at random.
-                Win and receive 9 ꜩ, but if you leave early, the other player
-                gets the prize. Blockchain incentives and strategic gameplay in
-                one fascinating package.
-              </div> */}
-              <div className="md:ml-[-20rem]">
-                {/* <SmokeBackground /> */}
-              </div>
             </div>
           </div>
           <div className="flex justify-center items-center h-full">
@@ -133,7 +105,6 @@ export default function Menu() {
                   onClick={() => {
                     setLoading(true);
                     socket?.emit("waitlist", username);
-                    makerg();
                   }}
                   className="menu-Button menu-Button-secondary bg-customC hover:bg-customh text-black transform hover:scale-105 text-black"
                 >

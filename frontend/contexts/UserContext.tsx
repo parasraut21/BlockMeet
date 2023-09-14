@@ -24,13 +24,7 @@ type UserProviderProps = {
 export function UserProvider({ children }: UserProviderProps): JSX.Element {
   const [id, setId] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-  // const n = prompt('Please enter your username:');
-  // if (n) {
-  //   setUsername(n);
-  //   alert(`Username: ${n}`);
-  // } else {
-  //   alert('No username entered.');
-  // }
+
   useEffect(() => {
  
    
