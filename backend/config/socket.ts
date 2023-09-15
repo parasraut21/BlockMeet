@@ -21,6 +21,24 @@ export const setupSocketIO = (server: HttpServer) => {
     let currentGameId: string | null = null;
     let username: string;
 
+      socket.on("meeting", (roomId, userId) => {
+    socket.join(roomId);
+    // console.log(roomId);
+    // console.log(userId);
+    socket.broadcast.emit("user-joined-meeting", roomId);
+  });
+
+ 
+    // main function listeners
+    socket.on("callUser", (data) => {
+        io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
+    })
+  
+    socket.on("acceptCall", (data) => {
+        io.to(data.to).emit('callAccepted', data.signal);
+    })
+  
+
     socket.on("username", (_username) => {
       console.log("socket username", _username);
       if (!_username) return;
@@ -28,7 +46,9 @@ export const setupSocketIO = (server: HttpServer) => {
       dev_users[playerId] = { username: _username, inGame: false };
     });
 
-    console.log("Client connected: " + playerId);
+    console.log("Client connected: " + playerId,username);
+    console.log("************",socket.id," ---",playerId)
+   
 
     function createGame(options?: { id: string; isPublic?: boolean }): string {
       let id =  generateId();
@@ -39,6 +59,7 @@ export const setupSocketIO = (server: HttpServer) => {
     }
 
     function joinGame(gameId: string, username: string): boolean {
+
       if (!username) username = "Guest";
       let gameIndex = games.findIndex((g) => g.id === gameId);
       if (gameIndex === -1) {
@@ -67,14 +88,28 @@ export const setupSocketIO = (server: HttpServer) => {
 
    
     socket.on("create", (data) => {
+      socket.emit('socketIdc', socket.id);
       console.log("socket create");
       createGame(data);
     });
 
-    socket.on("join game", (id, username) => {
-      console.log("socket join");
+    socket.on("join game", (id, username,socketId) => {
+     
       joinGame(id, username);
+      socket.emit('createSIDB', socketId);
+      socket.to(id).emit('getOSID', socketId);
     });
+
+    socket.on("oppoSID", (socketId) => {
+      console.log("OppoISD",socketId);
+      socket.emit('OppoISDB', socketId);
+    });
+
+    socket.on("createSID", (socketId) => {
+      console.log("createSID",socketId);
+    socket.emit('OppoISDB', socketId);
+    });
+
 
 
     async function leave(): Promise<void> {
@@ -114,7 +149,8 @@ export const setupSocketIO = (server: HttpServer) => {
 
     socket.on("disconnect", () => {
       console.log("socket disconnect");
-      console.log("Client disconnected: " + playerId, username);
+      console.log("Client disconnected: " + playerId);
+ 
       leave();
       delete dev_users[playerId];
     });

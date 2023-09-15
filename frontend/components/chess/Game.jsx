@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
-
+import VideoChatApp from "./VideFrame";
 import PropTypes from "prop-types";
-
-import Loader from "./Loader";
+import VideoFrame from "./VideFrame";
 
 import styles from "./Game.module.css";
 import { useSocket } from "@/contexts/SocketContext";
 import { copyToClipboard } from "@/helpers";
 import { useUser } from "@/contexts/UserContext";
 import { useGame } from "@/contexts/GamesContext";
-interface GameProps {
-  gameId: string;
-}
+// interface GameProps {
+//   gameId: string;
+// }
 
 const containerStyle = {
   display: "flex",
@@ -22,22 +21,77 @@ const containerStyle = {
   padding: "0",
 };
 
-export default function Game({ gameId }: GameProps) {
-  const { game, players, publicGame } = useGame() || {};
-
+export default function Game({ gameId }) {
+  const { game, players, publicGame ,OSID,CSID} = useGame() || {};
+  const [vidility, setVidility] = useState(false);
   const socket = useSocket();
   const { id, username } = useUser();
+  const [opponentSocketId, setOpponentSocketId] = useState('')
+  const [mySocketId, setMySocketId] = useState('')
 
-  const [buttonClicked, setButtonClicked] = useState<false | boolean>();
+  const [buttonClicked, setButtonClicked] = useState(false)
 
+  
+ 
   useEffect(() => {
     if (!socket) return;
-    socket.emit("join game", gameId, username ? username : "Guest");
+    socket.emit("join game", gameId, username ? username : "Guest",socket.id);
+
+    socket.on('getOSID' , (socketId)=>{
+setOpponentSocketId(socketId)
+console.log("Konoharam_________NOT________",socketId)
+     })
+
+     console.log("Konoharam_________________",opponentSocketId)
+
   }, [socket]);
+
+  useEffect(() => {
+   
+    socket.on('createSIDB', (socketId) => {
+      setMySocketId(socketId)
+      console.log("Creator socket.id: ", socketId);
+    });
+
+    // socket.on('OppoISDB', (socketId) => {
+    //   setOpponentSocketId(socketId)
+    //   console.log("createSIDB socket.id: ", mySocketId);
+    // });
+
+  }, []);
+
 
   return  (
  
     <>
+   {/* {vidility ?    : ""} */}
+   
+   <VideoChatApp
+                mySocketId={socket.id}
+                opponentSocketId={opponentSocketId}
+                myUserName="{props.myUserName}"
+                opponentUserName="{opponentUserName}"
+              /> 
+              
+    <div
+            className="shadow p-2 d-flex bg-white justify-content-center align-items-center rounded-circle"
+            style={{
+              position: "absolute",
+              right: "6rem",
+              width: "3rem",
+              height: "3rem",
+            }}
+            onClick={() => {
+              if (vidility) {
+                setVidility(false);
+                localStream.getVideoTracks()[0].stop();
+              } else {
+                setVidility(true);
+                console.log("Yeah Boi",OSID,"---------",CSID);
+              }
+            }}
+          >
+          </div> 
       <div className={styles.body}>
         <a href="#" className={styles["animated-button"]}>
           <span></span>

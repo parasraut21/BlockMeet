@@ -15,7 +15,7 @@ export default function Menu() {
   const [joiningGame, setJoiningGame] = useState(false);
   const [gameId, setGameId] = useState("");
 
-
+  const { makeCSID,makeOSID } = useGame();
 
   const handleGameIdChange = (event) => {
     setGameId(event.target.value);
@@ -27,6 +27,8 @@ export default function Menu() {
   };
 
   const handleJoinWithGameId = async () => {
+    makeCSID(socket.id)
+    socket?.emit("oppoSID",socket.id);
     setLoading(true);
     console.log("Joining game with ID:", gameId);
         router.push("/chess/" + gameId);
@@ -36,6 +38,8 @@ export default function Menu() {
   const socket = useSocket();
   const { username, id } = useUser();
   let showOnline = true;
+
+  
 
   useEffect(() => {
     if (!socket) return;
@@ -71,7 +75,8 @@ export default function Menu() {
   }, [socket]);
 
   const handlePrivateGameClick = () => {
-   
+  makeOSID(socket.id)
+    socket?.emit("createSID",socket.id);
     setLoading(true);
     socket?.emit("create");
   };

@@ -26,8 +26,6 @@ export function UserProvider({ children }: UserProviderProps): JSX.Element {
   const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
- 
-   
     let uid = typeof window !== "undefined" ? localStorage.getItem('uid') : null;
     if (!uid) {
       uid = generateId();
@@ -38,21 +36,24 @@ export function UserProvider({ children }: UserProviderProps): JSX.Element {
     } else {
       setId(uid);
     }
+
+    // Check if the username is stored in localStorage
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else {
+      // If no username is stored, prompt the user for a username
+      const userEnteredUsername = prompt('Please enter your username:');
+      if (userEnteredUsername) {
+        // Store the entered username in localStorage
+        localStorage.setItem('username', userEnteredUsername);
+        setUsername(userEnteredUsername);
+      }
+    }
   }, []);
 
   function updateUsername(u: string) {
-    const username = prompt('Please enter your username:');
-    
-
-    if (username) {
-
-      alert(`Username: ${username}`);
-      setUsername(username);
-    } else {
-
-      alert('No username entered.');
-    }
-   
+    // You can add logic here to update the username if needed.
   }
 
   const value = { id, username, updateUsername };

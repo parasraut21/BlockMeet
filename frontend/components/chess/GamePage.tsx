@@ -5,11 +5,10 @@ import { useRouter } from "next/router";
 import { useSocket } from "@/contexts/SocketContext";
 import { useGame } from "@/contexts/GamesContext";
 
-import useWindowSize from "react-use/lib/useWindowSize";
 
 
 import Modal from "./Modal";
-import styles from "./Game.module.css";
+
 export default function GamePage() {
   type Popup = {
     message: string;
@@ -47,28 +46,19 @@ export default function GamePage() {
       router.push("/Game");
     };
 
-    const playerLeftHandler = () => {
-      
-      setPopup({
-        message: "Your opponent left.",
-        extra: "9ꜩ have been added to your wallet",
-        element: <>
-        <button onClick={gotogame} className={styles["copy-button"]} >Game Page</button>
-        </>, 
-      });
-    };
+ 
 
    
 
   
 
     socket.on("leave", leaveHandler);
-    socket.on("player left", playerLeftHandler);
+
  
 
     return () => {
       socket.off("leave", leaveHandler);
-      socket.off("player left", playerLeftHandler);
+    
 
     };
   }, [socket]);

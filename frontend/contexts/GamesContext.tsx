@@ -16,7 +16,11 @@ type GameContextType = {
 
   makePublic?: () => void;
 
-
+  makeOSID?: (SID) => void;
+  makeCSID?: (SID) => void;
+  OSID?: any;
+  CSID?: any;
+  opponent?: any;
   opponent?: any;
   
 };
@@ -36,7 +40,8 @@ export function GamesProvider({ children }: GamesProviderProps) {
 
   const [game, setGame] = useState<any | null>(null);
 
-
+  const [OSID, setOSID] = useState<any | null>(null);
+  const [CSID, setCSID] = useState<any | null>(null);
 
 
   const [players, setPlayers] = useState<any[]>([]);
@@ -58,6 +63,14 @@ export function GamesProvider({ children }: GamesProviderProps) {
     setPublicGame(true);
   }
 
+  function makeOSID(SID) {
+    setOSID(SID)
+  }
+  function makeCSID(SID) {
+    setCSID(SID)
+  }
+
+
 
   const value: GameContextType = {
     game,
@@ -65,12 +78,13 @@ export function GamesProvider({ children }: GamesProviderProps) {
 
     players,
 
-  
- 
+    makeOSID,
+    makeCSID,
     publicGame,
     makePublic,
   
-   
+   OSID,
+   CSID,
     opponent,
   
   };
