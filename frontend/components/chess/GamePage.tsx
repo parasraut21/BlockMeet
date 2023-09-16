@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Game from "./Game";
+import Game from "./Meet";
 import Sidebar from "./Sidebar";
 import { useRouter } from "next/router";
 import { useSocket } from "@/contexts/SocketContext";
-import { useGame } from "@/contexts/GamesContext";
+import { useGame } from "@/contexts/MeetContext";
 
 
 
@@ -31,7 +31,7 @@ export default function GamePage() {
     
 
   const gotogame = () => {
-    router.push("/Game");
+    router.push("/Meet");
   };
  
 
@@ -43,7 +43,7 @@ export default function GamePage() {
     };
 
     const gotogame = () => {
-      router.push("/Game");
+      router.push("/Meet");
     };
 
  

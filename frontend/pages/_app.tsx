@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 
 import { SocketProvider } from "@/contexts/SocketContext";
 import { UserProvider } from "@/contexts/UserContext";
-import { GamesProvider } from "@/contexts/GamesContext";
+import { GamesProvider } from "@/contexts/MeetContext";
 import { ChatProvider } from "@/contexts/ChatContext";
 // import { AccountProvider } from "@/contexts/AccountContext";
 

@@ -4,7 +4,7 @@
 import React from 'react';
 import Messages from './Messages';
 import TapMessages from './TapMessages';
-import { useGame } from '@/contexts/GamesContext';
+import { useGame } from '@/contexts/MeetContext';
 import { allowLiveChat } from '@/var';
 interface SidebarProps {
   gameId: string;

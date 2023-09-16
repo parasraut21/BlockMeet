@@ -1,7 +1,7 @@
 import { Server as ServerSocket, Socket } from "socket.io";
 import { Server as HttpServer } from "http";
-import { generateId } from "../chess/helpers";
-import Game from "../chess/Game";
+import { generateId } from "../Meet/helpers";
+import Game from "../Meet/Meet";
 
 let games: Game[] = [];
 let waitlistGameId: string | null = null;

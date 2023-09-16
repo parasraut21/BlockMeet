@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSocket } from '@/contexts/SocketContext';
-import { useGame } from '@/contexts/GamesContext';
+import { useGame } from '@/contexts/MeetContext';
 
 interface TapMessagesProps {
   gameId: string; // Provide the appropriate type for gameId

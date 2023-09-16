@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import { useSocket } from "@/contexts/SocketContext";
 import { useUser } from "@/contexts/UserContext";
 import Loader from "./Loader";
-import Image from "next/image";
-import { useGame } from "@/contexts/GamesContext";
+import { useGame } from "@/contexts/MeetContext";
 import { Button, Card, TextInput } from "flowbite-react";
 
 export default function Menu() {
@@ -31,7 +30,7 @@ export default function Menu() {
     socket?.emit("oppoSID",socket.id);
     setLoading(true);
     console.log("Joining game with ID:", gameId);
-        router.push("/chess/" + gameId);
+        router.push("/Meet/" + gameId);
         setLoading(false);
   };
 
@@ -51,13 +50,13 @@ export default function Menu() {
     if (!socket) return;
     async function gotogame(gameId: string) {
      
-          router.push("/chess/" + gameId);
+          router.push("/Meet/" + gameId);
       
     }
 
     async function gotoram(gameId: string) {
    
-          router.push("/chess/" + gameId);
+          router.push("/Meet/" + gameId);
        
     }
 

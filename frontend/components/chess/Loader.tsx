@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useGame } from "@/contexts/GamesContext";
+import { useGame } from "@/contexts/MeetContext";
 import styles from "./Loader.module.css";
 import { Button, Card } from 'flowbite-react';
 interface LoaderProps {

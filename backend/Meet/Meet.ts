@@ -5,7 +5,7 @@ interface Player {
   username: string;
 }
 
-class Game {
+class Meet {
   id: string;
   players: Player[] = [];
   isPublic: boolean;
@@ -41,4 +41,4 @@ class Game {
 
 }
 
-export default Game;
+export default Meet;

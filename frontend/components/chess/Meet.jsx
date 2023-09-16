@@ -3,11 +3,11 @@ import VideoChatApp from "./VideFrame";
 import PropTypes from "prop-types";
 import VideoFrame from "./VideFrame";
 
-import styles from "./Game.module.css";
+import styles from "./Meet.module.css";
 import { useSocket } from "@/contexts/SocketContext";
 import { copyToClipboard } from "@/helpers";
 import { useUser } from "@/contexts/UserContext";
-import { useGame } from "@/contexts/GamesContext";
+import { useGame } from "@/contexts/MeetContext";
 // interface GameProps {
 //   gameId: string;
 // }
@@ -39,10 +39,10 @@ export default function Game({ gameId }) {
 
     socket.on('getOSID' , (socketId)=>{
 setOpponentSocketId(socketId)
-console.log("Konoharam_________NOT________",socketId)
+console.log("._________NOT________",socketId)
      })
 
-     console.log("Konoharam_________________",opponentSocketId)
+     console.log("._________________",opponentSocketId)
 
   }, [socket]);
 

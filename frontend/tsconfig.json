@@ -17,6 +17,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/chess/VideFrame.jsx", "components/chess/Game.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/chess/VideFrame.jsx", "components/chess/Meet.jsx"],
   "exclude": ["node_modules"]
 }
