@@ -1,4 +1,4 @@
-import GamePage from '@/components/chess/GamePage';
+import GamePage from '@/components/Meet/MeetPage';
 function GameDynamic() {
   return <GamePage />;
 }

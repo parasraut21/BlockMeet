@@ -102,40 +102,7 @@ function VideoChatApp(props) {
     peer.signal(callerSignal);
   }
 
-  // let UserVideo;
-  // if (stream) {
-  //   UserVideo = (
-  //     <Video playsInline muted ref={userVideo} autoPlay style = {{width: "50%", height: "50%"}} />
-  //   );
-  // }
-
-  // let mainView;
-
-  // if (callAccepted) {
-  //   mainView = (
-  //     <Video playsInline ref={partnerVideo} autoPlay style = {{width: "100%", height: "100%"}} />
-  //   );
-  // } else if (receivingCall) {
-  //   mainView = (
-  //     <div>
-  //       <h1 style={{color:"black"}} >{props.opponentUserName} is calling you</h1>
-  //       <button onClick={acceptCall} style={{color:"black"}}  ><h1>Accept</h1></button>
-  //     </div>
-  //   )
-  // } else if (isCalling) {
-  //   mainView = (
-  //     <div>
-  //       <h1 style={{color:"black"}}  >Currently calling {props.opponentUserName}...</h1>
-  //     </div>
-  //   )
-  // } else {
-  //   mainView = (
-  //     <button  style={{borderColor:"black"}}  onClick = {() => {
-  //       callPeer(props.opponentSocketId)
-  //     }}><h1 style={{color:"black"}}  >Chat with your friend while you play!</h1></button>
-  //   )
-  // }
-
+ 
   let UserVideo;
   if (stream) {
     UserVideo = (

@@ -71,9 +71,9 @@ export default function GamePage() {
         <div className="board-container">
           {gameId && <Game gameId={gameId as string} />}
         </div>
-     <Sidebar
+        <Sidebar
           gameId={gameId ? (Array.isArray(gameId) ? gameId[0] : gameId) : ""}
-        /> 
+        />
        
         {popup && socket && (
           <>

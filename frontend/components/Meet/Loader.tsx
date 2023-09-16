@@ -8,7 +8,7 @@ interface LoaderProps {
 }
 
 function Loader({ color, size }: LoaderProps) {
-  const { st,jg,rg } = useGame() || {};
+
   let style = {
     borderTopColor: color || '#444',
     borderLeftColor: color || '#444',
@@ -22,17 +22,6 @@ function Loader({ color, size }: LoaderProps) {
       <li key={index} className={styles.bubble}></li>
     ))}
   </ul>
-  <Card className="max-w-sm bg-transparent border border-transparent border-opacity-0">
-      {st && (
-        <p className={styles.p}>Starting The Game...</p>
-      )}
-       {jg && (
-        <p className={styles.p} >Joining The Game...</p>
-      )}
-       {rg && (
-        <p className={styles.p}>Joining Ramdom Game...</p>
-      )}
-        </Card>
   
     </div>
 
