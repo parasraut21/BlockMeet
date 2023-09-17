@@ -1,7 +1,7 @@
 const http = require('http')
 const express = require('express')
 const cors = require('cors');
-const Timer = require('./Timer')
+
 const Game = require('./Game')
 const socketIO = require('socket.io');
 const { generateId } = require('./helpers')
@@ -46,7 +46,7 @@ io.on('connection', socket => {
     currentGameId = game.id
 
     socket.emit('game', game.data())
-    if (game.players.length === 2) {
+    if (game.players.length ===2) {
       game.start()
       io.in(currentGameId).emit('players', game.players)
     }

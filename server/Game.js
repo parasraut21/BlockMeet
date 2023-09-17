@@ -31,7 +31,7 @@ class Game {
     console.log('User: ' + username)
     let playerIndex = this.players.findIndex(p => p.id === id)
     if (playerIndex === -1) {
-      if (this.players.length >= 2) return false
+      // if (this.players.length >= 2) return false
       if (this.players.length === 0) {
         this.active[0] = true
       } else {

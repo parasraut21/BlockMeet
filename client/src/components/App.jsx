@@ -15,7 +15,7 @@ import { GamesProvider } from '../contexts/GamesContext'
 
 import GamePage from './GamePage'
 import Menu from './Menu'
-import Login from './Login'
+
 
 function App() {
   return (
