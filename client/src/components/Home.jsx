@@ -41,7 +41,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 import VideoFrame from './VideoFrame';
 import { useSocket } from '../contexts/SocketContext';
 import { useParams, useNavigate } from 'react-router-dom'
-import Meet from './Meet';
+
 
 const Home = () => {
     const [isMicOn, setMicOn] = useState(true);
@@ -530,7 +530,7 @@ const Home = () => {
           </Toolbar>
         </AppBar>
       
- <div className="shadow bg-orange-400 p-2 mb-4 flex justify-between">
+ <div className="shadow  p-2 mb-4 flex justify-between">
         <div className="flex space-x-4">
           <div
             className="shadow p-2 flex bg-red-400 justify-center items-center rounded-full"

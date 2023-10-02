@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import io from 'socket.io-client'
 
-const GamesContext = React.createContext()
+const MeetsContext = React.createContext()
 
 export function useGame() {
-  return useContext(GamesContext)
+  return useContext(MeetsContext)
 }
 
 
 import { generateId } from '../helpers'
-import Chess from '../lib/chess'
+import Chess from '../lib/Meet'
 
 import { useSocket } from './SocketContext'
 import { useUser } from './UserContext'
@@ -198,11 +198,11 @@ export function GamesProvider({ children }) {
     timeLeft
   }
   return (
-    <GamesContext.Provider value={value}>
+    <MeetsContext.Provider value={value}>
       <audio src='/move.mp3' ref={moveSoundRef}></audio>
       <audio src='/alert.mp3' ref={playerJoinedRef}></audio>
       <audio src='/capture.mp3' ref={captureSoundRef}></audio>
       { children }
-    </GamesContext.Provider>
+    </MeetsContext.Provider>
   )
 }

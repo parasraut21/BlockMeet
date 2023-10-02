@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import Loader from './Loader';
 import { useSocket } from '../contexts/SocketContext';
 import { useUser } from '../contexts/UserContext';
-import { useGame } from '../contexts/GamesContext';
-import Meet from './Meet';
+import { useGame } from '../contexts/MeetsContext';
+
 import Home from './Home';
 
 const containerStyle = {

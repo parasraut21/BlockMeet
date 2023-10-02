@@ -9,7 +9,7 @@ import {
 
 import { SocketProvider } from '../contexts/SocketContext'
 import { UserProvider } from '../contexts/UserContext'
-import { GamesProvider } from '../contexts/GamesContext'
+import { GamesProvider } from '../contexts/MeetsContext'
 
 import React, { useState, useEffect } from 'react'
 import {

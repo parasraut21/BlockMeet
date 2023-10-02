@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-import Game from './Game'
+import Game from './MeetWait'
 
 
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSocket } from '../contexts/SocketContext'
-import { useGame } from '../contexts/GamesContext'
+import { useGame } from '../contexts/MeetsContext'
 import { useUser } from '../contexts/UserContext'
 
 
