@@ -4,6 +4,7 @@ import { useSocket } from '../contexts/SocketContext';
 import { useUser } from '../contexts/UserContext';
 import { useGame } from '../contexts/GamesContext';
 import Meet from './Meet';
+import Home from './Home';
 
 const containerStyle = {
   display: 'flex',
@@ -38,9 +39,9 @@ export default function Game({ gameId }) {
     <div style={containerStyle}>
       <Loader color="#fff" size="70px" />
     </div>
-  ) : players.length >= 2 ? (
+  ) : players.length >= 1 ? (
     <div>
-      <Meet />
+      <Home/>
     </div>
   ) : (
     <div style={containerStyle}>

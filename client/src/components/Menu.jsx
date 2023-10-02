@@ -4,8 +4,30 @@ import { generateId } from '../helpers'
 import { useUser } from '../contexts/UserContext'
 import { useSocket } from '../contexts/SocketContext'
 import Loader from './Loader'
+import Navbar from './Navbar'
+import Footer from './Footer'
 
 import { inDevelopment } from '../vars'
+
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Avatar,
+  InputBase,
+  IconButton,
+  Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Snackbar,
+} from '@mui/material';
+import HistoryIcon from '@mui/icons-material/History';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import JoinIcon from '@mui/icons-material/GroupAdd';
+import VideoCallIcon from '@mui/icons-material/VideoCall';
 
 export default function Menu() {
   const [myGames, setMyGames] = useState()
@@ -32,7 +54,7 @@ export default function Menu() {
     setLoading(true)
     console.log("Joining game with ID:", gameId);
   
-    navigate(`/Game/${gameId}`);
+    navigate(`/Meet/${gameId}`);
         setLoading(false)
       
    
@@ -45,7 +67,7 @@ export default function Menu() {
   useEffect(() => {
     if(!socket) return
     function gotogame(id) {
-      navigate('/game/' + id)
+      navigate('/Meet/' + id)
     }
     socket.on('game id', gotogame)
     socket.emit('get-users')
@@ -58,51 +80,178 @@ export default function Menu() {
     }
   }, [socket])
 
+  //
+  const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
+  const [isCopyDialogOpen, setIsCopyDialogOpen] = useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [copiedLink, setCopiedLink] = useState('');
+  const openJoinDialog = () => {
+    setIsJoinDialogOpen(true);
+  };
+
+  const closeJoinDialog = () => {
+    setIsJoinDialogOpen(false);
+  };
+
+  const openCopyDialog = () => {
+    setIsCopyDialogOpen(true);
+  };
+
+  const closeCopyDialog = () => {
+    setIsCopyDialogOpen(false);
+  };
+
+  const copyLinkToClipboard = () => {
+    const linkToCopy = 'https://example.com'; 
+    navigator.clipboard.writeText(linkToCopy).then(() => {
+      setCopiedLink(linkToCopy);
+      setIsSnackbarOpen(true);
+    });
+  };
+
   return (
-    <div className='flex flex-col justify-center items-center h-screen'>
-      { 
-        loading ? <Loader /> :
-        <>
-          <div className='menu-buttons'>
-            <button
-              onClick={() => {
-                setLoading(true);
-                socket.emit('create');
-              }}
-              className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            >
-              Private Meeting<span className="ml-2">Send a link to a friend</span>
-            </button>
-            <button
-                  onClick={handleJoinGameClick}
-                  className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                  Join Game
-                </button>
-                {joiningGame && (
-        <div className={`menu-buttons-1  p-8 rounded-lg shadow-md w-full max-w-sm`}>
-       <input
-  type="text"
-  placeholder="Enter Game ID"
-  value={gameId}
-  onChange={handleGameIdChange}
-  className={` w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300 shadow-white hover:shadow-lg`}
-  required
-/>
-          <button
-            onClick={handleJoinWithGameId}
-            className={`   mt-4 w-full p-2 bg-green-500 text-white rounded-md focus:outline-none focus:ring focus:border-blue-300`}
-          >
-            Join with Game ID
-          </button>
-          {loading && <Loader />}
+    <>
+<Navbar/>
+{showOnline && <div className="fixed top-8 left-8 bg-gray-100 p-2 rounded">Online: {onlineUsers.length}</div>}
+    <div
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+        }}
+      >
+        <div
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '20px', 
+            padding: '20px',
+            borderRadius: '15px',
+            background: 'white',
+            boxShadow: '0px 0px 12px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <Stack sx={[{ marginLeft: '40vw', marginTop: '20vh' }]}>
+            <Stack direction={{ xs: 'row' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<VideoCallIcon />}
+                sx={{
+                  width: '140px',
+                  height: '140px',
+                  marginTop: '1vh',
+                  marginLeft: '0.5vh',
+                  marginRight: '0.5vh',
+                }}
+                // onClick={openCopyDialog}
+                onClick={() => {
+                  setLoading(true);
+                  socket.emit('create');
+                }}
+              >
+                Start
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<ScheduleIcon />}
+                sx={{
+                  width: '140px',
+                  height: '140px',
+                  marginTop: '1vh',
+                  marginLeft: '0.5vh',
+                  marginRight: '0.5vh',
+                }}
+              >
+                Schedule
+              </Button>
+            </Stack>
+
+            <Stack direction={{ xs: 'row' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<JoinIcon />}
+                sx={{
+                  width: '140px',
+                  height: '140px',
+                  marginTop: '1vh',
+                  marginLeft: '0.5vh',
+                  marginRight: '0.5vh',
+                }}
+                onClick={openJoinDialog}
+              >
+                Join
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<HistoryIcon />}
+                sx={{
+                  width: '140px',
+                  height: '140px',
+                  marginTop: '1vh',
+                  marginLeft: '0.5vh',
+                  marginRight: '0.5vh',
+                }}
+              >
+                History
+              </Button>
+            </Stack>
+          </Stack>
         </div>
-      )}
-          </div>
-          {showOnline && <div className="fixed top-8 left-8 bg-gray-100 p-2 rounded">Online: {onlineUsers.length}</div>}
-          {inDevelopment && <div className='slide-down develop-message'>Development in process. Sorry for any inconvenience.</div>}
-        </>
-      }
-    </div>
+      </div>
+
+  
+      <Dialog open={isJoinDialogOpen} onClose={closeJoinDialog}>
+        <DialogTitle>Join Meeting</DialogTitle>
+        <DialogContent>
+          <Typography>Enter Meeting ID:</Typography>
+          {/* <InputBase placeholder="Meeting ID" /> */}
+          <InputBase
+            placeholder="Meeting ID"
+            value={gameId}
+            onChange={handleGameIdChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeJoinDialog} color="primary">
+            Cancel
+          </Button>
+          {/* <Button onClick={closeJoinDialog} color="primary">
+            Join
+          </Button> */}
+           <Button onClick={handleJoinWithGameId} color="primary" disabled={loading}>
+            {loading ? 'Joining...' : 'Join'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+  
+      <Dialog open={isCopyDialogOpen} onClose={closeCopyDialog}>
+        <DialogTitle>Copy Link to Clipboard</DialogTitle>
+        <DialogContent>
+          <Button variant="contained" color="primary" onClick={copyLinkToClipboard}>
+            Copy to Clipboard
+          </Button>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeCopyDialog} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={isSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setIsSnackbarOpen(false)}
+        message={`Link copied: ${copiedLink}`}
+      />
+         <Footer/>
+    </>
   );
 }
